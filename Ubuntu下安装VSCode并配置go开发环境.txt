@@ -1,0 +1,96 @@
+Ubuntu下安装并配置golang开发环境：
+
+本示例所用的环境版本：Ubuntu 18.04
+
+1.下载并安装Go环境
+	>>>国内下载地址：https://studygolang.com/dl
+
+	>>>安装并配置环境变量
+		假设我们要把go安装到/usr/local,并且把gopath路径设置为/usr/gopath
+		// 创建gopath目录
+		$sudo mkdir -p usr/gopath/src
+		// 给目录赋权限
+		$sudo chmod 777 -R /usr/gopath/
+		
+		// 解压下载后的go压缩包到/usr/local
+		$sudo tar -xvf go1.x.x.linux-amd64.tar.gz /usr/local
+		// 设置环境变量
+		$sudo vi /etc/profile
+		// 在最后追加以下3行内容
+		export GOROOT=/usr/local/go
+		export PATH=$PATH:/usr/local/go/bin
+		export GOPATH=/usr/gopath
+		// 保存退出
+		
+		// 重启
+		$reboot
+		
+	>>>配置go mod环境及其工具
+		// 查看go环境变量
+		$go env
+		// 打开go mod设置
+		$go env -w GO111MODULE=on
+		// 配置go的国内镜像
+		$go env -w GOPROXY=https://goproxy.cn,direct
+		// 安装go import
+		$go get -v golang.org/x/tools/cmd/goimports
+		// 安装以下go工具
+		$go install github.com/nsf/gocode
+		$go install github.com/uudashr/gopkgs/cmd/gopkgs
+		$go install github.com/rogpeppe/godef
+		$go install github.com/lukehoban/go-outline
+		$go install github.com/newhook/go-symbols
+		$go install golang.org/x/tools/cmd/guru
+		$go install golang.org/x/tools/cmd/gorename
+		$go install github.com/josharian/impl
+		$go install github.com/sqs/goreturns
+		$go install github.com/bytbox/golint
+		$go install github.com/cweill/gotests/gotests
+		$go install github.com/go-delve/delve/cmd/dlv
+
+2.下载并配置VSCode开发环境：
+	>>>下载地址：https://code.visualstudio.com/download
+		注意下载.deb类型的文件，下载完后直接打开安装
+	
+	>>>go环境配置
+		选中左侧的插件集，在搜索中输入go，第一个插件即是，点击Install
+		选中左下方齿轮按钮，选中setting->Extension->Go configuration->Edit in setting.json
+		修改setting.json文件内容如下：
+		{
+			"editor.wordWrap": "on",
+			"editor.minimap.renderCharacters": false,
+			"editor.minimap.enabled": false,
+			"terminal.external.osxExec": "iTerm.app",
+			//"go.useLanguageServer": true,
+			"go.docsTool": "gogetdoc",
+			"go.testFlags": ["-v","-count=1"],
+			"go.buildTags": "",
+			"go.buildFlags": [],
+			"go.lintFlags": [],
+			"go.vetFlags": [],
+			"go.coverOnSave": false,
+			"go.useCodeSnippetsOnFunctionSuggest": false,
+			"go.formatTool": "goreturns",
+			"go.gocodeAutoBuild": false,
+			"go.goroot": "/usr/local/go",
+			"go.gopath": "/usr/gopath",
+			"go.autocompleteUnimportedPackages": true,
+			"go.formatOnSave": true,
+			"window.zoomLevel": 0,
+			"debug.console.fontSize": 16,
+			"debug.console.lineHeight": 30,
+			"[javascript]": {
+				"editor.defaultFormatter": "HookyQR.beautify"
+			},
+			"[html]": {
+				"editor.defaultFormatter": "HookyQR.beautify"
+			},
+		}
+		其中go.goroot和go.gopath替换为自己的即可
+		在gopath/src下创建一个TestProject文件夹用来保存我们的测试用的go项目
+		打开VSCode,点击File->Open Folder,打开gopath/src/TestProject文件夹，然后新建一个main.go文件，保存，
+		会看到右下角VSCode的提示，点击提示中的InstallAll,等待安装完后重启即可。
+		
+		在main.go里面输入packege会看到提示“package main”，输入fmt.会看到fmt包里的函数，保存后还会自动把fmt包导入进来。
+		在项目根目录下生成go mod文件：
+		$go mod init

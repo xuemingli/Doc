@@ -1,0 +1,57 @@
+1.官方下载地址（直接去官网下载需要登陆）：
+	windows下载： https://download.docker.com/win/stable/Docker%20for%20Windows%20Installer.exe
+	Mac下载：https://download.docker.com/mac/stable/Docker.dmg
+2.基本命令使用：
+	1.查看docker有哪些命令
+		$docker
+	2.查看docker版本及用哪个版本的go语言编译出来
+		$docker version
+	3.查看更多信息：
+		$docker info
+	4.查看本地镜像：
+		$docker images
+	5.查看正在运行的镜像：
+		$docker ps
+	6.结束某个镜像,85f3f7b2d82f可以用docker ps命令查看：
+		$docker kill 85f3f7b2d82f
+	7.运行镜像
+		1.运行hello-world镜像
+			$docker run hello-world //如果本地没有hello-world镜像，该命令会先去网上拉取镜像，然后运行
+		2.运行alpine镜像，alpine是一个shell环境。-it:是输入输出重定向; sh: alpine非常小，大约几兆，只有shell。
+			$docker run -it alpine sh
+			//exit推出镜像
+		3.运行nginx网络服务,-d:在后台一直运行;-p 80:80:端口映射，将docker里面的80端口映射到外面的80物理端口。
+			$docker run -d -p 80:80 nginx
+		4.elasticsearch
+			1.安装elasticsearch,版本是7.4.2
+				$docker pull docker.elastic.co/elasticsearch/elasticsearch:7.4.2
+			2.运行elasticsearch
+				$docker run -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:7.4.2
+				在浏览器中访问localhost:9200
+				
+3.对批量的容器进行管理：
+>>>查看所有的正在运行的容器ID:
+$ docker ps -q
+>>>停止所有运行中的容器：
+$ docker stop $(docker ps -q)
+>>>启动所有停止的容器：
+$ docker start $(docker ps -qf status=exited)
+
+
+
+错误解决：
+
+>>>错误提示：
+docker run -d --name mysql-server --network my-network -e MYSQL_ROOT_PASSWORD=secret mysql
+/usr/bin/docker-current: Error response from daemon: Conflict. The container name "/mysql-server" 
+is already in use by container bdc8d8c475cb86695c466d23fd7102221f2c040898c2d576f94cd06c93ca811b. 
+You have to remove (or rename) that container to be able to reuse that name..
+See '/usr/bin/docker-current run --help'.
+解决方法：
+1.使用docker ps -l 命令查看
+# docker ps -l
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS                     PORTS               NAMES
+bdc8d8c475cb        mysql               "docker-entrypoint..."   33 minutes ago      Exited (0) 9 minutes ago                       mysql-server
+2.然后使用docker rm 命令
+[root@test3 ~]# docker rm bdc8d8c475cb
+bdc8d8c475cb
