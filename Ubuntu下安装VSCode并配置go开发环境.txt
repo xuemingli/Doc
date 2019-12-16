@@ -8,7 +8,7 @@ Ubuntu下安装并配置golang开发环境：
 	>>>安装并配置环境变量
 		假设我们要把go安装到/usr/local,并且把gopath路径设置为/usr/gopath
 		// 创建gopath目录
-		$sudo mkdir -p usr/gopath/src
+		$sudo mkdir -p /usr/gopath/src
 		// 给目录赋权限
 		$sudo chmod 777 -R /usr/gopath/
 		
