@@ -13,7 +13,7 @@ Ubuntu下安装并配置golang开发环境：
 		$sudo chmod 777 -R /usr/gopath/
 		
 		// 解压下载后的go压缩包到/usr/local
-		$sudo tar -xvf go1.x.x.linux-amd64.tar.gz /usr/local
+		$sudo tar zxf go1.13.5.linux-amd64.tar.gz -C /usr/local/
 		// 设置环境变量
 		$sudo vi /etc/profile
 		// 在最后追加以下3行内容
