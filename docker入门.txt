@@ -28,14 +28,16 @@
 			2.运行elasticsearch
 				$docker run -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:7.4.2
 				在浏览器中访问localhost:9200
+	8.删除镜像(以删除hello-world镜像为例)
+		$sudo docker rmi hello-world
 				
 3.对批量的容器进行管理：
 >>>查看所有的正在运行的容器ID:
-$ docker ps -q
+$ docker ps -aq
 >>>停止所有运行中的容器：
-$ docker stop $(docker ps -q)
->>>启动所有停止的容器：
-$ docker start $(docker ps -qf status=exited)
+$ sudo docker stop $(docker ps -qf status=up)
+>>>启动所有状态为exit的容器：
+$ sudo docker start $(sudo docker ps -qf status=exited)
 
 
 
